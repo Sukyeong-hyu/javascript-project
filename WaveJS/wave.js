@@ -32,24 +32,29 @@ export class Wave {
     ctx.beginPath();
     ctx.fillStyle = this.color;
 
-    let preX = this.points[0].x;
-    let preY = this.points[0].y;
+    let prevX = this.points[0].x;
+    let prevY = this.points[0].y;
 
-    ctx.moveTo(preX, preY);
+    ctx.moveTo(prevX, prevY);
 
     for (let i = 1; i < this.totalPoints; i++) {
       if (i < this.totalPoints - 1) {
         this.points[i].update();
       }
 
-      const cx = (preX + this.points[i].x) / 2;
-      const cy = (preY + this.points[i].y) / 2;
+      const cx = (prevX + this.points[i].x) / 2;
+      const cy = (prevY + this.points[i].y) / 2;
 
-      ctx.lineTo(preX, preY);
-      ctx.lineTo(this.stageWidth, this.stageHeight);
-      ctx.lineTo(this.points[0].x, this.stageHeight);
-      ctx.fill();
-      ctx.closePath();
+      ctx.lineTo(cx, cy);
+
+      prevX = this.points[i].x;
+      prevY = this.points[i].y;
     }
+
+    ctx.lineTo(prevX, prevY);
+    ctx.lineTo(this.stageWidth, this.stageHeight);
+    ctx.lineTo(this.points[0].x, this.stageHeight);
+    ctx.fill();
+    ctx.closePath();
   }
 }
